@@ -21,7 +21,8 @@ gem 'less-rails'
 gem 'sass-rails'
 gem 'less-rails-bootstrap', '<3.0.0'
 gem 'nprogress-rails'
-gem 'libv8', '~> 3.11.8'
+gem 'libv8'
+gem 'therubyracer'
 
 group :test, :development do
   gem 'quiet_assets'

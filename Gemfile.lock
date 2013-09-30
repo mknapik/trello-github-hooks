@@ -210,6 +210,7 @@ GEM
       ffi (>= 0.5.0)
     rdoc (3.12.2)
       json (~> 1.4)
+    ref (1.0.5)
     remotipart (1.2.1)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
@@ -250,6 +251,9 @@ GEM
       sprockets (~> 2.8)
     sqlite3 (1.3.8)
     temple (0.6.6)
+    therubyracer (0.11.4)
+      libv8 (~> 3.11.8.12)
+      ref
     thin (1.5.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -289,7 +293,7 @@ DEPENDENCIES
   less-rails
   less-rails-bootstrap (< 3.0.0)
   libnotify
-  libv8 (~> 3.11.8)
+  libv8
   meta_request
   nprogress-rails
   pry-rails
@@ -305,5 +309,6 @@ DEPENDENCIES
   slim-rails
   spring
   sqlite3
+  therubyracer
   thin
   turbolinks
