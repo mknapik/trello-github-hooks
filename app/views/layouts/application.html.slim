@@ -1,0 +1,62 @@
+doctype 5
+html
+  head
+    title TrelloGithubHooks
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = stylesheet_link_tag    'application-css', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+ 
+    = csrf_meta_tag
+    = analytics_init if Rails.env.production?
+  body id=(controller.controller_name) class=(controller.action_name)
+    .navbar.navbar-inverse.navbar-fixed-top
+      .navbar-inner
+        .container
+          button.btn.btn-navbar[type="button" data-toggle="collapse" data-target=".nav-collapse"]
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand[href="#"]
+            | SOSO
+          .nav-collapse.collapse
+            ul.nav
+              li= nav_link_to 'Dashboard', '#'
+            form.navbar-form.pull-right
+              ul.nav
+                - if true
+                  /can?(:access, :admin)
+                  li.dropdown
+                    a.dropdown-toggle[href="#" data-toggle="dropdown"]
+                      | Admin
+                      b.caret
+                    ul.dropdown-menu
+                      li= link_to('Users', '#')
+                - if current_user
+                  li.dropdown
+                    a.dropdown-toggle[href="#" data-toggle="dropdown"]
+                      = current_user.email
+                      b.caret
+                    ul.dropdown-menu
+                      li= nav_link_to('Profile', user_path(current_user))
+                      li.divider
+                      li= nav_link_to('Change password', edit_user_registration_path)
+                      li= link_to 'Sign Out', destroy_user_session_path, method: :delete
+                - else
+                  li= link_to 'Sign In', new_user_session_path
+ 
+    .wrapper
+      - flash.each do |name, msg|
+        = content_tag :div, raw(msg), class: "alert #{alert_class(name)}"
+ 
+      = yield
+ 
+    .push
+ 
+    footer
+      .container
+        p &copy; 2013 All rights reserved.
+        p
+          a[href='#'] Michał Knapik
+ 
+ 
+  = yield :js
