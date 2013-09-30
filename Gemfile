@@ -4,6 +4,7 @@ ruby '2.0.0'
 
 gem 'rails', '4.0.0'
 gem 'devise'                    # for authorization
+gem 'cancan'
 gem 'sqlite3'
 gem 'thin', require: false
 

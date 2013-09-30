@@ -6,4 +6,8 @@ class ApplicationController < ActionController::Base
   def index
     render text: 'Hello World'
   end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, :alert => exception.message
+  end
 end
