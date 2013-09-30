@@ -14,6 +14,7 @@ gem 'turbolinks'                # Turbolinks makes following links in your web a
 gem 'jbuilder', '~> 1.2'        # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'figaro'                    # used for keeping secret data private
 gem 'rails_admin'
+gem 'simple_form'
 
 # assets
 gem 'slim-rails'
