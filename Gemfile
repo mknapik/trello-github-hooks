@@ -1,39 +1,59 @@
 source 'https://rubygems.org'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+ruby '2.0.0'
+
 gem 'rails', '4.0.0'
-
-# Use sqlite3 as the database for Active Record
+gem 'devise'                    # for authorization
 gem 'sqlite3'
+gem 'thin', require: false
 
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+gem 'jquery-rails'              # Use jquery as the JavaScript library
+gem 'jquery-ui-rails'
+gem 'coffee-rails'
+gem 'turbolinks'                # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+gem 'jbuilder', '~> 1.2'        # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'figaro'                    # used for keeping secret data private
+gem 'rails_admin'
 
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+# assets
+gem 'slim-rails'
+gem 'less-rails'
+gem 'sass-rails'
+gem 'less-rails-bootstrap', '<3.0.0'
+gem 'nprogress-rails'
+gem 'libv8', '~> 3.11.8'
 
-# Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
-
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
-
-group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', require: false
+group :test, :development do
+  gem 'quiet_assets'
+# guard
+  gem 'guard'              # automatically run various tasks depending on file changes
+  gem 'guard-bundler'      # runs `bundle install` on Gemfile changes
+  gem 'guard-annotate'     # annotates model classes on schema changes
 end
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
+group :doc do
+  gem 'sdoc', require: false    # bundle exec rake doc:rails generates the API under doc/api.
+end
+
+group :development do
+  gem 'rails-erd'          # generates ERD from model (`rake erd`)
+  gem 'ruby-graphviz'      # for state_machine graphs
+
+  gem 'pry-rails'          # (more than) an IRB replacement
+  gem 'rack-mini-profiler' # displays profiler in left upper corner
+  gem 'foreman'
+  gem 'better_errors'      # shows verbose error messages if action fails
+  gem 'binding_of_caller'  # provides additional info for better_errors
+  gem 'meta_request'       # for Chrome RailsPanel Extension
+
+# guard
+  gem 'guard-rspec'
+  gem 'guard-livereload'   # reloads the browser after each change (browser plugin is required)
+  gem 'rb-fsevent'
+  gem 'libnotify'          # for guard notification
+
+  gem 'spring'
+end
 
 # Use unicorn as the app server
 # gem 'unicorn'
@@ -42,4 +62,4 @@ end
 # gem 'capistrano', group: :development
 
 # Use debugger
-# gem 'debugger', group: [:development, :test]
+gem 'debugger', group: [:development, :test]
