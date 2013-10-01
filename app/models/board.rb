@@ -26,4 +26,12 @@ class Board < ActiveRecord::Base
             presence: true
   validates :repository,
             presence: true
+
+  def key
+    self.repository.user.trello_api_key
+  end
+
+  def token
+    self.repository.user.trello_token
+  end
 end

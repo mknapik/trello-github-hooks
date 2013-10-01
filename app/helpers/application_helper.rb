@@ -14,4 +14,8 @@ module ApplicationHelper
       link_to link_text, link_path
     end
   end
+
+  def trello_url(path, options = {})
+    "https://api.trello.com/1/#{path}?key=#{options[:key]}&token=#{options[:token]}"
+  end
 end

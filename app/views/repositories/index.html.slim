@@ -1,6 +1,6 @@
 h1 Listing repositories
 
-table
+table.table
   tr
     th Name
     th User
@@ -10,8 +10,8 @@ table
 
   - @repositories.each do |repository|
     tr
-      td = repository.name
-      td = repository.user
+      td = link_to repository.name, "https://github/#{repository.name}"
+      td = link_to repository.user.try(:email), user_path(repository.user)
       td = link_to 'Show', repository
       td = link_to 'Edit', edit_repository_path(repository)
       td = link_to 'Destroy', repository, :confirm => 'Are you sure?', :method => :delete

@@ -36,4 +36,8 @@ class User < ActiveRecord::Base
   def setup?
     not self.trello_token.nil?
   end
+
+  def name
+    self.email
+  end
 end

@@ -1,10 +1,11 @@
 h1 Listing boards
 
-table
+table.table
   tr
     th Uid
     th Name
     th Repository
+    th User
     th
     th
     th
@@ -13,7 +14,8 @@ table
     tr
       td = board.uid
       td = board.name
-      td = board.repository
+      td = link_to board.repository.try(:name), repository_path(board.repository)
+      td = link_to board.repository.try(:user).try(:email), user_path(board.repository.try(:user))
       td = link_to 'Show', board
       td = link_to 'Edit', edit_board_path(board)
       td = link_to 'Destroy', board, :confirm => 'Are you sure?', :method => :delete
