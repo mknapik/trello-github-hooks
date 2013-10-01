@@ -3,6 +3,7 @@ class BoardsController < ApplicationController
   before_action :set_board, only: [:show, :edit, :update, :destroy]
   skip_before_filter :verify_authenticity_token, only: [:push]
   before_action :set_repositories_collection, only: [:new, :update, :edit, :create]
+  skip_before_filter :authenticate_user!, only: [:push]
 
   # GET /boards
   # GET /boards.json
