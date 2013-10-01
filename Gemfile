@@ -6,6 +6,7 @@ gem 'rails', '4.0.0'
 gem 'devise'                    # for authorization
 gem 'cancan'
 gem 'sqlite3', group: :development, require: false
+gem 'pg'
 gem 'thin', require: false
 
 gem 'jquery-rails'              # Use jquery as the JavaScript library

@@ -23,37 +23,51 @@ class BoardsController < ApplicationController
     repository_name = repository_params['name']
     commits = commits_params['commits']
 
-    repository = Repository.where(name: "#{owner_name}/#{repository_name}").first
+    repository_name = "#{owner_name}/#{repository_name}"
+    repository = Repository.where(name: repository_name).first
 
-    commented_on = {:success => true, :comments => Array.new}
+    commented_on = {:success => true, :comments => Array.new, :errors => Array.new}
 
-    commits.each do |commit|
-      message = "#{commit['author']['username']}: #{commit['message']} [#{commit['id']}](#{commit['url']})"
-      match = commit['message'].match(/\#(?<cardId>\d+)/)
-      unless match.nil?
-        cardId = match[:cardId]
+    if repository.nil?
+      commented_on[:success] = false
+      commented_on[:errors] = "Repository '#{repository_name}' does not exist!"
+    else
+      commits.each do |commit|
+        message = "#{commit['author']['username']}: #{commit['message']} [#{commit['id']}](#{commit['url']})"
+        match = commit['message'].match(/\#(?<cardId>\d+)/)
+        unless match.nil?
+          cardId = match[:cardId]
 
-        repository.boards.each do |board|
-          cards_url = trello_url("boards/#{board.uid}/cards", key: board.key, token: board.token)
-          cards = HTTParty.get cards_url
+          repository.boards.each do |board|
+            cards_url = trello_url("boards/#{board.uid}/cards", key: board.key, token: board.token)
+            cards = HTTParty.get cards_url
 
-          cards.each do |card|
-            if card['idShort'].to_s == cardId
-              comment_url = trello_url("cards/#{card['id']}/actions/comments", key: board.key, token: board.token)
+            if cards.success?
+              cards.each do |card|
+                if card['idShort'].to_s == cardId
+                  comment_url = trello_url("cards/#{card['id']}/actions/comments", key: board.key, token: board.token)
 
-              response = HTTParty.post comment_url,
-                                       :body => {:text => message}.to_json,
-                                       :headers => { 'Content-Type' => 'application/json' }
-              if response.success?
-                commented_on[:comments] << response.parsed_response
-              else
-                commented_on[:success] = false
+                  response = HTTParty.post comment_url,
+                                           :body => {:text => message}.to_json,
+                                           :headers => {'Content-Type' => 'application/json'}
+                  if response.success?
+                    commented_on[:comments] << response.parsed_response
+                  else
+                    commented_on[:success] = false
+                    commented_on[:errors] = response.parsed_response
+                  end
+                end
               end
+            else
+              commented_on[:success] = false
+              commented_on[:errors] << cards.parsed_response
             end
           end
         end
       end
     end
+
+    commented_on[:errors].uniq!
 
     respond_to do |format|
       format.json { render json: commented_on, status: :created }

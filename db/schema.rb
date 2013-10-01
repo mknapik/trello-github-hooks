@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20131001071632) do
     t.datetime "updated_at"
   end
 
-  add_index "boards", ["repository_id"], name: "index_boards_on_repository_id"
+  add_index "boards", ["repository_id"], name: "index_boards_on_repository_id", using: :btree
 
   create_table "repositories", force: true do |t|
     t.string   "name"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 20131001071632) do
     t.datetime "updated_at"
   end
 
-  add_index "repositories", ["user_id"], name: "index_repositories_on_user_id"
+  add_index "repositories", ["user_id"], name: "index_repositories_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20131001071632) do
     t.string   "trello_token"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
