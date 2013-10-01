@@ -15,7 +15,6 @@ gem 'jquery-ui-rails'
 gem 'coffee-rails'
 gem 'turbolinks'                # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'jbuilder', '~> 1.2'        # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'figaro'                    # used for keeping secret data private
 #gem 'rails_admin'
 gem 'simple_form'
 gem 'httparty'
@@ -28,11 +27,11 @@ gem 'less-rails-bootstrap', '<3.0.0'
 gem 'uglifier'
 
 gem 'nprogress-rails'
-gem 'libv8'
-gem 'therubyracer'
-gem 'ruby-trello'
 
-gem 'rails_12factor', group: :production # suggested by heroku
+# Heroku suggests that these gems aren't necessary, but they're required to compile less assets on deploy.
+gem 'therubyracer', platforms: :ruby
+gem 'libv8', '~> 3.11.8'
+gem 'rails_12factor', group: :production # required by heroku for Rails 4.0
 
 group :test, :development do
   gem 'quiet_assets'

@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-TrelloGithubHooks::Application.config.secret_key_base = 'dcca6bd9ee34f817b40db3e6f3419ffde9ee465d50b468de32f6e71c446dec119b4de2f4150d3e2c49dc0f5f513964697294133968b1e2c94251dc393b9229c3'
+TrelloGithubHooks::Application.config.secret_key_base = ENV['SECRET_KEY_BASE'] || 'dcca6bd9ee34f817b40db3e6f3419ffde9ee465d50b468de32f6e71c446dec119b4de2f4150d3e2c49dc0f5f513964697294133968b1e2c94251dc393b9229c3'

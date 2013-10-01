@@ -1,11 +1,10 @@
 doctype 5
 html
   head
-    title TrelloGithubHooks
+    title Trello Github Hooks
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = stylesheet_link_tag    'application-css', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
-    /= javascript_include_tag  "https://api.trello.com/1/client.js"
 
     = csrf_meta_tag
   body id=(controller.controller_name) class=(controller.action_name)
@@ -17,7 +16,7 @@ html
             span.icon-bar
             span.icon-bar
           a.brand[href="#"]
-            | SOSO
+            | Trello Github Hooks
           .nav-collapse.collapse
             ul.nav
               li= nav_link_to 'Dashboard', root_path
@@ -26,21 +25,13 @@ html
               li= nav_link_to 'Repositories', repositories_path
             form.navbar-form.pull-right
               ul.nav
-                - if true
-                  /can?(:access, :admin)
-                  li.dropdown
-                    a.dropdown-toggle[href="#" data-toggle="dropdown"]
-                      | Admin
-                      b.caret
-                    ul.dropdown-menu
-                      li= link_to('Users', '#')
                 - if current_user
                   li.dropdown
                     a.dropdown-toggle[href="#" data-toggle="dropdown"]
                       = current_user.email
                       b.caret
                     ul.dropdown-menu
-                      li= nav_link_to('Profile', '#')
+                      li= nav_link_to('Profile', user_path(current_user))
                       li.divider
                       li= nav_link_to('Change password', edit_user_registration_path)
                       li= link_to 'Sign Out', destroy_user_session_path, method: :delete
