@@ -15,7 +15,7 @@ gem 'coffee-rails'
 gem 'turbolinks'                # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'jbuilder', '~> 1.2'        # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'figaro'                    # used for keeping secret data private
-gem 'rails_admin'
+#gem 'rails_admin'
 gem 'simple_form'
 gem 'httparty'
 
@@ -24,6 +24,8 @@ gem 'slim-rails'
 gem 'less-rails'
 gem 'sass-rails'
 gem 'less-rails-bootstrap', '<3.0.0'
+gem 'uglifier'
+
 gem 'nprogress-rails'
 gem 'libv8'
 gem 'therubyracer'
@@ -60,12 +62,6 @@ group :development do
 
   gem 'spring'
 end
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
 
 # Use debugger
 gem 'debugger', group: [:development, :test]
