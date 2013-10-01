@@ -10,7 +10,7 @@ table.table
 
   - @repositories.each do |repository|
     tr
-      td = link_to repository.name, "https://github/#{repository.name}"
+      td = link_to repository.name, "https://github.com/#{repository.name}"
       td = link_to repository.user.try(:email), user_path(repository.user)
       td = link_to 'Show', repository
       td = link_to 'Edit', edit_repository_path(repository)

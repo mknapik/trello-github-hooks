@@ -24,51 +24,51 @@ class BoardsController < ApplicationController
 
     repository = Repository.where(name: full_name).first
 
-    commented_on = {:success => true, :comments => Array.new, :errors => Array.new}
+    response = {success: true, comments: Array.new, errors: Array.new}
 
     if repository.nil?
-      commented_on[:success] = false
-      commented_on[:errors] = "Repository '#{full_name}' does not exist!"
+      response[:success] = false
+      response[:errors] = "Repository '#{full_name}' does not exist!"
     else
       commits.each do |commit|
+        # for each commit check if contains task marker '#number'
         message = "#{commit['author']['username']}: #{commit['message']} [#{commit['id']}](#{commit['url']})"
-        match = commit['message'].match(/\#(?<cardId>\d+)/)
+        match = commit['message'].match(/\#(?<idShort>\d+)/)
+
         unless match.nil?
-          cardId = match[:cardId]
+          idShort = match[:idShort]
 
           repository.boards.each do |board|
-            cards_url = trello_url("boards/#{board.uid}/cards", key: board.key, token: board.token)
-            cards = HTTParty.get cards_url
+            # for each repository's board get all cards and check if card for given cardId exist
+            cards = get_cards_by_board_uid(board.uid, key: board.key, token: board.token)
 
             if cards.success?
               cards.each do |card|
-                if card['idShort'].to_s == cardId
-                  comment_url = trello_url("cards/#{card['id']}/actions/comments", key: board.key, token: board.token)
+                if card['idShort'].to_s == idShort
+                  # place a comment on this card
+                  posted = post_comment(card['id'], message, key: board.key, token: board.token)
 
-                  response = HTTParty.post comment_url,
-                                           :body => {:text => message}.to_json,
-                                           :headers => {'Content-Type' => 'application/json'}
-                  if response.success?
-                    commented_on[:comments] << response.parsed_response
+                  if posted.success?
+                    response[:comments] << posted.parsed_response
                   else
-                    commented_on[:success] = false
-                    commented_on[:errors] = response.parsed_response
+                    response[:success] = false
+                    response[:errors] << posted.parsed_response
                   end
                 end
               end
             else
-              commented_on[:success] = false
-              commented_on[:errors] << cards.parsed_response
+              response[:success] = false
+              response[:errors] << cards.parsed_response
             end
           end
         end
       end
     end
 
-    commented_on[:errors].uniq!
+    response[:errors].uniq!
 
     respond_to do |format|
-      format.json { render json: commented_on, status: :created }
+      format.json { render json: response, status: :created }
     end
   end
 
@@ -138,5 +138,18 @@ class BoardsController < ApplicationController
 
   def commits_params
     params.permit(:commits => [:message, :id, :url, :author => [:email, :name, :username]])
+  end
+
+  def get_cards_by_board_uid(board_uid, options = {})
+    cards_url = trello_url("boards/#{board_uid}/cards", key: options[:key], token: options[:token])
+    HTTParty.get cards_url
+  end
+
+  def post_comment(card_id, message, options = {})
+    comment_url = trello_url("cards/#{card_id}/actions/comments", key: options[:key], token: options[:token])
+
+    HTTParty.post comment_url,
+                  :body => {:text => message}.to_json,
+                  :headers => {'Content-Type' => 'application/json'}
   end
 end
