@@ -11,7 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130930155414) do
+ActiveRecord::Schema.define(version: 20130930184700) do
+
+  create_table "boards", force: true do |t|
+    t.string   "uid"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "repositories", force: true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "repositories", ["user_id"], name: "index_repositories_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -26,6 +42,8 @@ ActiveRecord::Schema.define(version: 20130930155414) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "trello_api_key"
+    t.string   "trello_token"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

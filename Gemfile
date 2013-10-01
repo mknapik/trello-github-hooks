@@ -5,7 +5,7 @@ ruby '2.0.0'
 gem 'rails', '4.0.0'
 gem 'devise'                    # for authorization
 gem 'cancan'
-gem 'sqlite3'
+gem 'sqlite3', group: :development, require: false
 gem 'thin', require: false
 
 gem 'jquery-rails'              # Use jquery as the JavaScript library
@@ -25,6 +25,7 @@ gem 'less-rails-bootstrap', '<3.0.0'
 gem 'nprogress-rails'
 gem 'libv8'
 gem 'therubyracer'
+gem 'ruby-trello'
 
 group :test, :development do
   gem 'quiet_assets'
