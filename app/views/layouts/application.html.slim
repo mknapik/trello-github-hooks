@@ -31,7 +31,7 @@ html
                       = current_user.email
                       b.caret
                     ul.dropdown-menu
-                      li= nav_link_to('Profile', user_path(current_user))
+                      li= nav_link_to('Profile', profile_path)
                       li.divider
                       li= nav_link_to('Change password', edit_user_registration_path)
                       li= link_to 'Sign Out', destroy_user_session_path, method: :delete

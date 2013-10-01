@@ -4,6 +4,7 @@
   .form-inputs
     = f.input :email
     = f.input :trello_api_key
+    = link_to 'Request API Key', 'https://trello.com/1/appKey/generate', target: '_blank'
 
   .form-actions
     = f.button :submit

@@ -83,6 +83,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def profile
+    @user = current_user
+    render :show
+  end
+
+  def edit_profile
+    @user = current_user
+    render :edit
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

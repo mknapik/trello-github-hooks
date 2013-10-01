@@ -12,6 +12,9 @@ TrelloGithubHooks::Application.routes.draw do
 
   post 'push' => 'boards#push'
 
+  get 'profile' => 'users#profile'
+  get 'profile/edit' => 'users#edit_profile'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

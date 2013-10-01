@@ -2,7 +2,7 @@ h1 Listing boards
 
 table.table
   tr
-    th Uid
+    th UID
     th Name
     th Repository
     th User
@@ -12,7 +12,7 @@ table.table
 
   - @boards.each do |board|
     tr
-      td = board.uid
+      td = link_to board.uid, "https://trello.com/b/#{board.uid}"
       td = board.name
       td = link_to board.repository.try(:name), repository_path(board.repository)
       td = link_to board.repository.try(:user).try(:email), user_path(board.repository.try(:user))
