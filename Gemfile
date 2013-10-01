@@ -16,6 +16,7 @@ gem 'jbuilder', '~> 1.2'        # Build JSON APIs with ease. Read more: https://
 gem 'figaro'                    # used for keeping secret data private
 gem 'rails_admin'
 gem 'simple_form'
+gem 'httparty'
 
 # assets
 gem 'slim-rails'

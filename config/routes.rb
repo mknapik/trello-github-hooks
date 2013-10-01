@@ -10,6 +10,8 @@ TrelloGithubHooks::Application.routes.draw do
     patch 'token' => 'users#update_token'
   end
 
+  post 'push' => 'boards#push', defaults: {format: 'json'}
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

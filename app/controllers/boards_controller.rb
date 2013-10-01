@@ -1,5 +1,7 @@
 class BoardsController < ApplicationController
+  include ApplicationHelper
   before_action :set_board, only: [:show, :edit, :update, :destroy]
+  skip_before_filter :verify_authenticity_token, only: [:push]
 
   # GET /boards
   # GET /boards.json
@@ -10,6 +12,52 @@ class BoardsController < ApplicationController
   # GET /boards/1
   # GET /boards/1.json
   def show
+  end
+
+  # POST /push
+  def push
+    repository_params = params.require(:repository).permit(:name, :owner => [:email, :name])
+    commits_params = params.permit(:commits => [:message, :id, :url, :author => [:email, :name, :username]])
+
+    owner_name = repository_params['owner']['name']
+    repository_name = repository_params['name']
+    commits = commits_params['commits']
+
+    repository = Repository.where(name: "#{owner_name}/#{repository_name}").first
+
+    commented_on = {:success => true, :comments => Array.new}
+
+    commits.each do |commit|
+      message = "#{commit['author']['username']}: #{commit['message']} [#{commit['id']}](#{commit['url']})"
+      match = commit['message'].match(/\#(?<cardId>\d+)/)
+      unless match.nil?
+        cardId = match[:cardId]
+
+        repository.boards.each do |board|
+          cards_url = trello_url("boards/#{board.uid}/cards", key: board.key, token: board.token)
+          cards = HTTParty.get cards_url
+
+          cards.each do |card|
+            if card['idShort'].to_s == cardId
+              comment_url = trello_url("cards/#{card['id']}/actions/comments", key: board.key, token: board.token)
+
+              response = HTTParty.post comment_url,
+                                       :body => {:text => message}.to_json,
+                                       :headers => { 'Content-Type' => 'application/json' }
+              if response.success?
+                commented_on[:comments] << response.parsed_response
+              else
+                commented_on[:success] = false
+              end
+            end
+          end
+        end
+      end
+    end
+
+    respond_to do |format|
+      format.json { render json: commented_on, status: :created }
+    end
   end
 
   # GET /boards/new
@@ -62,13 +110,13 @@ class BoardsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_board
-      @board = Board.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_board
+    @board = Board.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def board_params
-      params.require(:board).permit(:uid, :name, :repository_id)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def board_params
+    params.require(:board).permit(:uid, :name, :repository_id)
+  end
 end
