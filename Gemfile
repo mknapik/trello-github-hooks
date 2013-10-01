@@ -31,6 +31,10 @@ gem 'libv8'
 gem 'therubyracer'
 gem 'ruby-trello'
 
+gem 'rails_12factor', group: :production # suggested by heroku
+gem 'foreman'
+gem 'unicorn'
+
 group :test, :development do
   gem 'quiet_assets'
 # guard
