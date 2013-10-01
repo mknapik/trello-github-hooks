@@ -4,7 +4,7 @@
   .form-inputs
     = f.input :uid
     = f.input :name
-    = f.association :repository
+    = f.association :repository, collection: @repositories
 
   .form-actions
     = f.button :submit

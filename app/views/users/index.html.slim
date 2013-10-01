@@ -21,9 +21,15 @@ table.table
             = link_to 'Request Token', "https://trello.com/1/authorize?key=#{user.trello_api_key}&name=Trello+Github+Hooks&expiration=never&response_type=token&scope=read,write&callback_method=fragment&return_url=#{user_token_url(user)}".html_safe
         - else
           'set
-      td = link_to 'Show', user
-      td = link_to 'Edit', edit_user_path(user)
-      td = link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete
+      td
+        - if can? :view, user
+          = link_to 'Show', user
+      td
+        - if can? :edit, user
+          = link_to 'Edit', edit_user_path(user)
+      td
+        - if can? :delete, user
+          = link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete
 
 br
 

@@ -4,49 +4,34 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.all.select {|user| can? :view, user}
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
-  end
-
-  # GET /users/new
-  def new
-    @user = User.new
+    access_denied! 'cannot.view.user', users_path if cannot? :edit, @user
   end
 
   # GET /users/1/edit
   def edit
+    access_denied! 'cannot.edit.user', users_path if cannot? :edit, @user
   end
 
   # GET /users/1/edit
   def edit_token
     @user = User.find(params[:user_id])
+    access_denied! 'cannot.edit.user', users_path if cannot? :edit, @user
+
     @user.trello_token = params[:token] unless params[:token].blank?
     redirect_to @user, notice: 'Fill up API key first!' if @user.trello_api_key.blank?
-  end
-
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @user }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    access_denied! 'cannot.edit.user', users_path if cannot? :edit, @user
+
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
@@ -62,6 +47,8 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1/token.json
   def update_token
     @user = User.find(params[:user_id])
+    access_denied! 'cannot.edit.user', users_path if cannot? :edit, @user
+
     respond_to do |format|
       if @user.update(params.require(:user).permit(:trello_token))
         format.html { redirect_to @user, notice: 'Token was successfully updated.' }
@@ -76,6 +63,8 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    access_denied! 'cannot.delete.user', users_path if cannot? :edit, @user
+
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url }
@@ -85,11 +74,15 @@ class UsersController < ApplicationController
 
   def profile
     @user = current_user
+    access_denied! 'cannot.view.user', users_path if cannot? :edit, @user
+
     render :show
   end
 
   def edit_profile
     @user = current_user
+    access_denied! 'cannot.edit.user', profile_path if cannot? :edit, @user
+
     render :edit
   end
 

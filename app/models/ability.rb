@@ -4,6 +4,24 @@ class Ability
   def initialize(user)
     user ||= User.new # guest user (not logged in)
 
+    can :manage, User do |u|
+      user.id == u.id
+    end
+
+    can :manage, Board do |board|
+      user_id = board.user.try(:id)
+      user.id == user_id or board.id.nil?
+    end
+
+    can :manage, Repository do |repository|
+      user_id = repository.user.try(:id)
+      user.id == user_id or repository.id.nil?
+    end
+
+    can :create, Repository
+    can :create, Board
+    cannot :create, User
+
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)

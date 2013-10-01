@@ -2,16 +2,18 @@ class BoardsController < ApplicationController
   include ApplicationHelper
   before_action :set_board, only: [:show, :edit, :update, :destroy]
   skip_before_filter :verify_authenticity_token, only: [:push]
+  before_action :set_repositories_collection, only: [:new, :update, :edit, :create]
 
   # GET /boards
   # GET /boards.json
   def index
-    @boards = Board.all
+    @boards = Board.all.select {|board| can? :view, board}
   end
 
   # GET /boards/1
   # GET /boards/1.json
   def show
+    access_denied! 'cannot.view.board', boards_path if cannot? :view, @board
   end
 
   # POST /push
@@ -74,17 +76,23 @@ class BoardsController < ApplicationController
 
   # GET /boards/new
   def new
+    access_denied! 'cannot.create.board', boards_path if cannot? :create, Board
+
     @board = Board.new
   end
 
   # GET /boards/1/edit
   def edit
+    access_denied! 'cannot.edit.board', boards_path if cannot? :edit, @board
   end
 
   # POST /boards
   # POST /boards.json
   def create
+    access_denied! 'cannot.create.board', boards_path if cannot? :create, Board
+
     @board = Board.new(board_params)
+    access_denied! 'cannot.edit.board', boards_path if cannot? :edit, @board
 
     respond_to do |format|
       if @board.save
@@ -100,6 +108,8 @@ class BoardsController < ApplicationController
   # PATCH/PUT /boards/1
   # PATCH/PUT /boards/1.json
   def update
+    access_denied! 'cannot.edit.board', boards_path if cannot? :edit, @board
+
     respond_to do |format|
       if @board.update(board_params)
         format.html { redirect_to @board, notice: 'Board was successfully updated.' }
@@ -114,6 +124,8 @@ class BoardsController < ApplicationController
   # DELETE /boards/1
   # DELETE /boards/1.json
   def destroy
+    access_denied! 'cannot.delete.board', boards_path if cannot? :edit, @board
+
     @board.destroy
     respond_to do |format|
       format.html { redirect_to boards_url }
@@ -125,6 +137,10 @@ class BoardsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_board
     @board = Board.find(params[:id])
+  end
+
+  def set_repositories_collection
+    @repositories = Repository.all.select {|repo| can? :view, repo}
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -3,7 +3,7 @@
 
   .form-inputs
     = f.input :name
-    = f.association :user
+    = f.input :user_id, as: :hidden, input_html: {value: @user.id}
 
   .form-actions
     = f.button :submit

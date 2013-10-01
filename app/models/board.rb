@@ -28,10 +28,14 @@ class Board < ActiveRecord::Base
             presence: true
 
   def key
-    self.repository.user.trello_api_key
+    self.repository.try(:user).try(:trello_api_key)
   end
 
   def token
-    self.repository.user.trello_token
+    self.repository.try(:user).try(:trello_token)
+  end
+
+  def user
+    self.repository.try(:user)
   end
 end

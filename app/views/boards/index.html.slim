@@ -16,9 +16,15 @@ table.table
       td = board.name
       td = link_to board.repository.try(:name), repository_path(board.repository)
       td = link_to board.repository.try(:user).try(:email), user_path(board.repository.try(:user))
-      td = link_to 'Show', board
-      td = link_to 'Edit', edit_board_path(board)
-      td = link_to 'Destroy', board, :confirm => 'Are you sure?', :method => :delete
+      td
+        - if can? :view, board
+          = link_to 'Show', board
+      td
+        - if can? :edit, board
+          = link_to 'Edit', edit_board_path(board)
+      td
+        - if can? :delete, board
+          = link_to 'Destroy', board, :confirm => 'Are you sure?', :method => :delete
 
 br
 

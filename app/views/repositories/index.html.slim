@@ -13,8 +13,12 @@ table.table
       td = link_to repository.name, "https://github.com/#{repository.name}"
       td = link_to repository.user.try(:email), user_path(repository.user)
       td = link_to 'Show', repository
-      td = link_to 'Edit', edit_repository_path(repository)
-      td = link_to 'Destroy', repository, :confirm => 'Are you sure?', :method => :delete
+      td
+        - if can? :edit, repository
+          = link_to 'Edit', edit_repository_path(repository)
+      td
+        - if can? :delete, repository
+          = link_to 'Destroy', repository, :confirm => 'Are you sure?', :method => :delete
 
 br
 
