@@ -16,21 +16,15 @@ class BoardsController < ApplicationController
 
   # POST /push
   def push
-    repository_params = params.require(:repository).permit(:name, :owner => [:email, :name])
-    commits_params = params.permit(:commits => [:message, :id, :url, :author => [:email, :name, :username]])
-
-    owner_name = repository_params['owner']['name']
-    repository_name = repository_params['name']
+    full_name = "#{repository_params['owner']['name']}/#{repository_params['name']}"
     commits = commits_params['commits']
-
-    repository_name = "#{owner_name}/#{repository_name}"
-    repository = Repository.where(name: repository_name).first
+    repository = Repository.where(name: full_name).first
 
     commented_on = {:success => true, :comments => Array.new, :errors => Array.new}
 
     if repository.nil?
       commented_on[:success] = false
-      commented_on[:errors] = "Repository '#{repository_name}' does not exist!"
+      commented_on[:errors] = "Repository '#{full_name}' does not exist!"
     else
       commits.each do |commit|
         message = "#{commit['author']['username']}: #{commit['message']} [#{commit['id']}](#{commit['url']})"
@@ -132,5 +126,13 @@ class BoardsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def board_params
     params.require(:board).permit(:uid, :name, :repository_id)
+  end
+
+  def repository_params
+    params.require(:repository).permit(:name, :owner => [:email, :name])
+  end
+
+  def commits_params
+    params.permit(:commits => [:message, :id, :url, :author => [:email, :name, :username]])
   end
 end
