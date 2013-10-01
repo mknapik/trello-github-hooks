@@ -16,8 +16,10 @@ class BoardsController < ApplicationController
 
   # POST /push
   def push
-    full_name = "#{repository_params['owner']['name']}/#{repository_params['name']}"
-    commits = commits_params['commits']
+    payload = JSON.parse(params[:payload])
+
+    full_name = "#{payload['owner']['name']}/#{payload['name']}"
+    commits = payload['commits']
     repository = Repository.where(name: full_name).first
 
     commented_on = {:success => true, :comments => Array.new, :errors => Array.new}
