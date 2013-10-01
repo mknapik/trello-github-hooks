@@ -3,7 +3,7 @@ class CreateBoards < ActiveRecord::Migration
     create_table :boards do |t|
       t.string :uid
       t.string :name
-      #t.references :user, index: true
+      t.references :repository, index: true
 
       t.timestamps
     end

@@ -1,0 +1,10 @@
+= simple_form_for(@board) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :uid
+    = f.input :name
+    = f.association :repository
+
+  .form-actions
+    = f.button :submit

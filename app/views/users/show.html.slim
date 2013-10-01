@@ -1,6 +1,27 @@
 p#notice = notice
 
+p
+  strong Email:
+  '
+  = @user.email
+p
+  strong Trello Key:
+  '
+  = @user.trello_api_key
+p
+  strong Trello Token:
+  '
+  - if @user.trello_token.blank?
+    - if @user.trello_api_key.blank?
+      'fill api key first
+    - else
+      = link_to 'Request Token', "https://trello.com/1/authorize?key=#{@user.trello_api_key}&name=Trello+Github+Hooks&expiration=never&response_type=token&scope=read,write&callback_method=fragment&return_url=#{user_token_url(@user)}".html_safe
+  - else
+    = @user.trello_token
 
 = link_to 'Edit', edit_user_path(@user)
 '|
+- unless @user.trello_api_key.blank?
+  = link_to 'Edit Token', user_token_path(@user)
+  '|
 = link_to 'Back', users_path

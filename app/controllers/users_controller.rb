@@ -21,6 +21,13 @@ class UsersController < ApplicationController
   def edit
   end
 
+  # GET /users/1/edit
+  def edit_token
+    @user = User.find(params[:user_id])
+    @user.trello_token = params[:token] unless params[:token].blank?
+    redirect_to @user, notice: 'Fill up API key first!' if @user.trello_api_key.blank?
+  end
+
   # POST /users
   # POST /users.json
   def create
@@ -51,6 +58,21 @@ class UsersController < ApplicationController
     end
   end
 
+  # PATCH/PUT /users/1/token
+  # PATCH/PUT /users/1/token.json
+  def update_token
+    @user = User.find(params[:user_id])
+    respond_to do |format|
+      if @user.update(params.require(:user).permit(:trello_token))
+        format.html { redirect_to @user, notice: 'Token was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit_token' }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
@@ -69,6 +91,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params[:user]
+      params.require(:user).permit(:email, :trello_api_key)
     end
 end

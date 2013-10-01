@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Uid:
+  = @board.uid
+p
+  strong Name:
+  = @board.name
+p
+  strong Repository:
+  = @board.repository
+
+= link_to 'Edit', edit_board_path(@board)
+'|
+= link_to 'Back', boards_path

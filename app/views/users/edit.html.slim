@@ -4,5 +4,8 @@ h1 Editing user
 
 = link_to 'Show', @user
 '|
+- unless @user.trello_api_key.blank?
+  = link_to 'Edit Token', user_token_path(@user)
+  '|
 = link_to 'Back', users_path
 

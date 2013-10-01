@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20130930182051
+# Schema version: 20131001071632
 #
 # Table name: repositories
 #
@@ -17,5 +17,12 @@
 #++
 
 class Repository < ActiveRecord::Base
-  #belongs_to :user
+  belongs_to :user
+  has_many :boards
+
+  validates :name,
+            presence: true,
+            uniqueness: true
+  validates :user,
+            presence: true
 end

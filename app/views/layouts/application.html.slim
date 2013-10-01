@@ -20,7 +20,10 @@ html
             | SOSO
           .nav-collapse.collapse
             ul.nav
-              li= nav_link_to 'Dashboard', '#'
+              li= nav_link_to 'Dashboard', root_path
+              li= nav_link_to 'Users', users_path
+              li= nav_link_to 'Boards', boards_path
+              li= nav_link_to 'Repositories', repositories_path
             form.navbar-form.pull-right
               ul.nav
                 - if true

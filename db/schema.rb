@@ -11,14 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130930184700) do
+ActiveRecord::Schema.define(version: 20131001071632) do
 
   create_table "boards", force: true do |t|
     t.string   "uid"
     t.string   "name"
+    t.integer  "repository_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "boards", ["repository_id"], name: "index_boards_on_repository_id"
 
   create_table "repositories", force: true do |t|
     t.string   "name"

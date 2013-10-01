@@ -1,0 +1,25 @@
+h1 Editing user token
+
+= simple_form_for(@user, url: user_token_path(@user), html: {method: :patch, class: 'form-horizontal'}) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :trello_token
+
+  .form-actions
+    = f.button :submit
+
+= link_to 'Show', @user
+'|
+= link_to 'Edit', edit_user_path(@user)
+'|
+= link_to 'Back', users_path
+
+
+= content_for :js
+  coffee:
+    jQuery ->
+      fragment = document.location.hash.split('#token=')
+      if fragment.length > 1
+        console.log fragment[1]
+        $('#user_trello_token').attr('value', fragment[1])

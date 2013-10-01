@@ -1,17 +1,29 @@
 # == Schema Information
-# Schema version: 20130930184700
+# Schema version: 20131001071632
 #
 # Table name: boards
 #
-# *id*::         <tt>integer, not null, primary key</tt>
-# *uid*::        <tt>string(255)</tt>
-# *name*::       <tt>string(255)</tt>
-# *created_at*:: <tt>datetime</tt>
-# *updated_at*:: <tt>datetime</tt>
+# *id*::            <tt>integer, not null, primary key</tt>
+# *uid*::           <tt>string(255)</tt>
+# *name*::          <tt>string(255)</tt>
+# *repository_id*:: <tt>integer, indexed</tt>
+# *created_at*::    <tt>datetime</tt>
+# *updated_at*::    <tt>datetime</tt>
+#
+# Indexes
+#
+#  index_boards_on_repository_id  (repository_id)
 #--
 # == Schema Information End
 #++
 
 class Board < ActiveRecord::Base
-  #belongs_to :user
+  belongs_to :repository
+
+  validates :uid,
+            presence: true
+  validates :name,
+            presence: true
+  validates :repository,
+            presence: true
 end

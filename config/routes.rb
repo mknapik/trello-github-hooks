@@ -1,7 +1,15 @@
 TrelloGithubHooks::Application.routes.draw do
-  resources :users
-
   devise_for :users
+
+  resources :boards
+
+  resources :repositories
+
+  resources :users do
+    get 'token' => 'users#edit_token'
+    patch 'token' => 'users#update_token'
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
