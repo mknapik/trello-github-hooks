@@ -2,12 +2,13 @@ source 'https://rubygems.org'
 
 ruby '2.0.0'
 
-gem 'rails', '4.0.0'
-gem 'devise'                    # for authorization
-gem 'cancan'
-gem 'sqlite3', group: :development, require: false
-gem 'pg'
+gem 'unicorn', require: false
 gem 'thin', require: false
+
+gem 'rails', '~> 4.0.0'
+gem 'devise'                    # for authentication
+gem 'cancan'                    # for authorization
+gem 'pg'
 
 gem 'jquery-rails'              # Use jquery as the JavaScript library
 gem 'jquery-ui-rails'
@@ -32,8 +33,6 @@ gem 'therubyracer'
 gem 'ruby-trello'
 
 gem 'rails_12factor', group: :production # suggested by heroku
-gem 'foreman'
-gem 'unicorn'
 
 group :test, :development do
   gem 'quiet_assets'
