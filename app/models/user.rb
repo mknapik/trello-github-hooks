@@ -32,4 +32,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :repositories
+
+  def setup?
+    not self.trello_token.nil?
+  end
 end

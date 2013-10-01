@@ -14,7 +14,7 @@ table.table
       td= user.email
       td= user.trello_api_key
       td
-        - if user.trello_token.blank?
+        - if not user.setup?
           - if user.trello_api_key.blank?
             'fill api key first
           - else

@@ -5,7 +5,8 @@ html
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = stylesheet_link_tag    'application-css', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
- 
+    /= javascript_include_tag  "https://api.trello.com/1/client.js"
+
     = csrf_meta_tag
     = analytics_init if Rails.env.production?
   body id=(controller.controller_name) class=(controller.action_name)

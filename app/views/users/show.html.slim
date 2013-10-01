@@ -11,7 +11,7 @@ p
 p
   strong Trello Token:
   '
-  - if @user.trello_token.blank?
+  - if not @user.setup?
     - if @user.trello_api_key.blank?
       'fill api key first
     - else
@@ -24,4 +24,17 @@ p
 - unless @user.trello_api_key.blank?
   = link_to 'Edit Token', user_token_path(@user)
   '|
-= link_to 'Back', users_path
+= link_to 'Back', users_path          
+
+- if @user.setup?
+  h3 Demo
+  p
+    = link_to 'Get the member’s record:', "https://trello.com/1/members/me?key=#{@user.trello_api_key}&token=#{@user.trello_token}"
+  p
+    = link_to 'Get the cards that a user is assigned to', "https://trello.com/1/members/my/cards?key=#{@user.trello_api_key}&token=#{@user.trello_token}"
+  p
+    = link_to 'Get the open boards that a user is a member of', "https://trello.com/1/members/my/boards?key=#{@user.trello_api_key}&token=#{@user.trello_token}"
+  p
+    = link_to 'Get the boards that a user has pinned to their boards menu:', "https://trello.com/1/members/my/boards/pinned?key=#{@user.trello_api_key}&token=#{@user.trello_token}"
+  p
+    = link_to 'Get the organizations that a user is a member of', "https://trello.com/1/members/my/organizations?key=#{@user.trello_api_key}&token=#{@user.trello_token}"
