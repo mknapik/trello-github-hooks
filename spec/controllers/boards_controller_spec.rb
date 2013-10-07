@@ -37,7 +37,7 @@ describe BoardsController do
 
     context 'repository exists' do
       before do
-        octokitty = User.where(email: 'octokitty@github.com').first_or_create!
+        octokitty = User.create!(email: 'octokitty@github.com', password: 'password')
         repository = Repository.create!(name: 'octokitty/testing', user: octokitty)
         board = Board.create!(uid: 'uid', name: 'name', repository: repository)
       end
@@ -46,7 +46,7 @@ describe BoardsController do
         request.accept = 'application/json'
         post :push, {'payload' => payload}
         expect(response).to be_success
-        expect(JSON.parse(response.body)['success']).to be_false
+        expect(JSON.parse(response.body)['success']).to be_true
         expect(JSON.parse(response.body)['comments']).to be_empty
         expect(JSON.parse(response.body)['errors']).to be_empty
       end
