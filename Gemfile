@@ -17,6 +17,7 @@ gem 'jbuilder', '~> 1.2'        # Build JSON APIs with ease. Read more: https://
 #gem 'rails_admin'
 gem 'simple_form'
 gem 'httparty'
+gem 'active_attr'
 
 # assets
 gem 'slim-rails'
@@ -38,6 +39,12 @@ group :test, :development do
   gem 'guard'              # automatically run various tasks depending on file changes
   gem 'guard-bundler'      # runs `bundle install` on Gemfile changes
   gem 'guard-annotate'     # annotates model classes on schema changes
+
+  gem 'rspec-rails'
+  gem 'shoulda-matchers'
+  gem 'factory_girl_rails'
+  gem 'faker'
+  gem 'fuubar'
 end
 
 group :doc do

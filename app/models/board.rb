@@ -38,4 +38,8 @@ class Board < ActiveRecord::Base
   def user
     self.repository.try(:user)
   end
+
+  def trello
+    Trello.new(self.key, self.token)
+  end
 end
